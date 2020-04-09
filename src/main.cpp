@@ -2,6 +2,9 @@
 //** Projekt Falltür für Thea                                                                      **
 //***************************************************************************************************
 
+#include <Arduino.h>
+#include "Entprellung.h"
+
 //***   AUSGÄNGE
 #define Mh      2                            // Motor hoch -> D2 (immer max. Geschwindigkeit)
 #define Mr      A6                           // Motor runter -> A6 (immer max. Geschwindigkeit)
@@ -18,10 +21,20 @@
 
 //*** Globale Variablen
 int Zustand;
+Entprellung TasterMan(Tman);
 
-#include <Arduino.h>
+
 
 void setup() {
+  //*** Initialisierungen
+  pinMode(Mh,OUTPUT);
+  pinMode(Mr,OUTPUT);
+  pinMode(Kzu,INPUT_PULLUP);
+  pinMode(Koff,INPUT_PULLUP);
+  pinMode(Tman,INPUT_PULLUP);
+
+
+
   Serial.begin(115200);
   Serial.println("OK, ICH BIN BEREIT!");
   Zustand=ST_Bereit;
@@ -35,8 +48,8 @@ void Bedingungen()
 }
 
 void loop() {
-  
+  Serial.println(TasterMan.readState());
   //*** Bedingungen
-
+  delay(5);
 
 }
