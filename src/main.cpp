@@ -1,6 +1,8 @@
 //***************************************************************************************************
 //** Projekt Falltür für Thea                                                                      **
 //***************************************************************************************************
+#define Mh 2                            // Motor hoch -> D2 (immer max. Geschwindigkeit)
+#define Mr A6                           // Motor runter -> A6 (immer max. Geschwindigkeit)
 
 #include <Arduino.h>
 
