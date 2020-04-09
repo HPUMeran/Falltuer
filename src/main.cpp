@@ -48,8 +48,5 @@ void Bedingungen()
 }
 
 void loop() {
-  Serial.println(TasterMan.readState());
-  //*** Bedingungen
-  delay(5);
-
+  
 }
