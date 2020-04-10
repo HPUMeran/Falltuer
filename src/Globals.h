@@ -18,6 +18,6 @@
 
 //*** Globale Variablen
 extern int Zustand;
-
+extern bool Tman_Pressed;
 
 #endif

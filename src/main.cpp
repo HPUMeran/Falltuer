@@ -1,7 +1,7 @@
 //***************************************************************************************************
 //** Projekt Falltür für Thea                                                                      **
 //***************************************************************************************************
-
+#define DEBUG true
 #include <Arduino.h>
 #include <Globals.h>
 #include <Entprellung.h>
@@ -33,7 +33,33 @@ void setup() {
 
 
 void loop() {
-  transistions();
+  //*** Sensoren auslesen
+  Tman_Pressed=TasterMan.fallingedge();             // Taster manuell ist Öffner
+  #ifdef DEBUG
+    if(Tman_Pressed) Serial.println("Taster Manuell gedrückt!");
+  #endif
+  //*** Übergänge kontrollieren, um aktuellen Zustand herauszufinden
+  transitions();
+
+  //*** Aktionen ausführen, die zum Zustand gehören
+  switch(Zustand)
+  {
+    case ST_Bereit:
+      Serial.println("BEREIT!");
+      digitalWrite(Mh,LOW);
+      digitalWrite(Mr,LOW);
+      break;    
+    case ST_Oeffnen:
+      Serial.println("Klappe ÖFFNET!");
+      digitalWrite(Mh,HIGH);
+      digitalWrite(Mr,LOW);
+      break;
+    case ST_Schliessen:
+      Serial.println("Klappe SCHLIESST!");
+      digitalWrite(Mr,HIGH);
+      digitalWrite(Mh,LOW);
+      break;
+  }
   Serial.println(Zustand);
-  delay(1000);
+  delay(500);
 }
