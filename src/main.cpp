@@ -5,7 +5,7 @@
 #include <Arduino.h>
 #include <Globals.h>
 #include <Entprellung.h>
-
+#include <transitions.h>
 
 //*** Globale Variablen
 Entprellung TasterMan(Tman);
@@ -28,12 +28,10 @@ void setup() {
 
 }
 
-void Bedingungen()
-{
-  // --- von Bereit auf öffnen
-  if(Zustand==ST_Bereit );
-}
+
 
 void loop() {
-  
+  transistions();
+  Serial.println(Zustand);
+  delay(1000);
 }
