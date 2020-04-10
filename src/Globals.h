@@ -3,7 +3,7 @@
 
 //***   AUSGÄNGE
 #define Mh      2                            // Motor hoch -> D2 (immer max. Geschwindigkeit)
-#define Mr      A6                           // Motor runter -> A6 (immer max. Geschwindigkeit)
+#define Mr      A0                           // Motor runter -> A6 (immer max. Geschwindigkeit)
 
 //***   EINGÄNGE
 #define Kzu     7                           // Reed-Schalter Klappe geschlossen (Öffner)
