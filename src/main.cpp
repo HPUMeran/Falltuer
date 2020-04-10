@@ -9,6 +9,9 @@
 
 //*** Globale Variablen
 Entprellung TasterMan(Tman);
+uint8_t ring_pos=0, ring_num=0;     // Variablen für Ringpuffer: Position des Zeigers, Anzahl Bytes im Puffer
+const uint8_t ring_cap = 10;        // Kapazität des Puffers
+uint8_t ring[ring_cap];             // Ring-Puffer für Datenübertragung über serielle Schnittstelle
 
 
 
@@ -38,6 +41,19 @@ void loop() {
   #ifdef DEBUG
     if(Tman_Pressed) Serial.println("Taster Manuell gedrückt!");
   #endif
+  //*** Serielle Schnittstelle auslesen und in RingPuffer speichern
+  if(Serial.available())
+  {
+    delay(5);
+    while (Serial.available())
+    {
+      ring[ring_pos]=Serial.read();
+      ring_pos=(ring_pos+1) % ring_cap;
+      ring_num=(ring_num+1) % ring_num;
+      
+    }
+    
+  }
   //*** Übergänge kontrollieren, um aktuellen Zustand herauszufinden
   transitions();
 

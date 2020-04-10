@@ -10,7 +10,7 @@ void transitions()
         Zustand=ST_Oeffnen;
 
     // --- von Öffnen auf Bereit
-    if(Zustand==ST_Oeffnen && digitalRead(Koff)==LOW)
+    if(Zustand==ST_Oeffnen && (digitalRead(Koff)==LOW || Tman_Pressed))
         Zustand=ST_Bereit;
 
     // --- von Bereit auf Schließen
@@ -18,6 +18,6 @@ void transitions()
         Zustand=ST_Schliessen;
 
     // --- von Schließen auf Bereit
-    if(Zustand==ST_Schliessen && digitalRead(Kzu)==LOW)
+    if(Zustand==ST_Schliessen && (digitalRead(Kzu)==LOW || Tman_Pressed))
         Zustand=ST_Bereit;
 }
