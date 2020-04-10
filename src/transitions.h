@@ -5,6 +5,6 @@
 
 //*** Berechnet aufgrund der Eingänge und Bedingungen den aktuellen Zustand
 //*** Gibt nichts zurück
-void transistions();
+void transitions();
 
 #endif
