@@ -3,24 +3,11 @@
 //***************************************************************************************************
 
 #include <Arduino.h>
-#include "Entprellung.h"
+#include <Globals.h>
+#include <Entprellung.h>
 
-//***   AUSGÄNGE
-#define Mh      2                            // Motor hoch -> D2 (immer max. Geschwindigkeit)
-#define Mr      A6                           // Motor runter -> A6 (immer max. Geschwindigkeit)
-
-//***   EINGÄNGE
-#define Kzu     7                           // Reed-Schalter Klappe geschlossen (Öffner)
-#define Koff    8                           // Reed-Schalter Klappe offen (Öffner)
-#define Tman    A3                          // Taster manuelle Steuerung
-
-//***   ZUSTÄNDE
-#define ST_Bereit       1
-#define ST_Oeffnen    	2
-#define ST_Schliessen   3
 
 //*** Globale Variablen
-int Zustand;
 Entprellung TasterMan(Tman);
 
 

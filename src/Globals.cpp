@@ -1,0 +1,2 @@
+//*** Globale Variablen
+int Zustand;
