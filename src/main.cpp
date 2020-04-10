@@ -21,9 +21,11 @@ void setup() {
   pinMode(Tman,INPUT_PULLUP);
 
 
-
+  //*** Kommunikation mit seriellem Monitor
   Serial.begin(115200);
   Serial.println("OK, ICH BIN BEREIT!");
+
+  //*** Startzustand setzen
   Zustand=ST_Bereit;
 
 }
