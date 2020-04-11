@@ -6,6 +6,7 @@
 #include <Globals.h>
 #include <Entprellung.h>
 #include <transitions.h>
+#include <LDR.h>
 
 //*** Globale Variablen
 Entprellung TasterMan(Tman);
@@ -38,9 +39,7 @@ void setup() {
 void loop() {
   //*** Sensoren auslesen
   Tman_Pressed=TasterMan.fallingedge();             // Taster manuell ist Öffner
-  #ifdef DEBUG
-    if(Tman_Pressed) Serial.println("Taster Manuell gedrückt!");
-  #endif
+
   //*** Serielle Schnittstelle auslesen und in RingPuffer speichern
   if(Serial.available())
   {
@@ -51,6 +50,8 @@ void loop() {
       ring_num++;
     }
   }
+
+  //*** MODE Befehle interpretieren
   if(ring_num>1)
   {
     //*** Daten vorhanden
@@ -75,18 +76,19 @@ void loop() {
             Mode=Mode_Zu;
             Serial.println("MODE ZU");
           }
-          else
-              {
-                Serial.println("Fehler beim Protokoll MODE");
-              }
+          else if (ring[ring_pos]==Par_AutoLDR)
+            {
+              Mode=Mode_AutoLDR;
+              Serial.println("MODE AUTO_LDR");
+            }
+            else
+                {
+                  Serial.println("Fehler beim Protokoll MODE");
+                }
       ring_num-=2;        
     }
   }
 
-  if(Mode==Mode_Auf)
-    Zustand=ST_Oeffnen;
-  if(Mode==Mode_Zu)
-    Zustand=ST_Schliessen;
   //*** Übergänge kontrollieren, um aktuellen Zustand herauszufinden
   transitions();
     

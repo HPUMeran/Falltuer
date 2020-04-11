@@ -37,6 +37,7 @@ extern uint8_t Par_AutoLDR;
 extern int Mode;                            // Konfigurations-Modus: Offen-ZU-Automatik
 extern int Zustand;                         // Zustand im Zustandsdiagramm
 extern bool Tman_Pressed;                   // Taster Manuell gedrückt?
+
 extern bool bHell;                          // Helligkeit an LDR > hellGrenze?
 extern int hellGrenze;                      // Schwellwert für Helligkeit (ADC-Wert)
 extern unsigned long hellIntervall;         // Min. Zeit, die es bHell sein muss, um Tag zu erkennen
