@@ -7,15 +7,19 @@
 #include <Entprellung.h>
 #include <transitions.h>
 #include <LDR.h>
+#include <DHT.h>
 
 //*** Globale Variablen
-Entprellung TasterMan(Tman);
-LDR ldr_Aussen(LDRpin);
+Entprellung TasterMan(Tman);        // Entprellung des manuellen Tasters
+LDR ldr_Aussen(LDRpin);             // LDR für Dämmerungsschaltung
+DHT dhtinnen;                       // InnenTemperaturSensor
 
 uint8_t ring_pos=0, ring_num=0;     // Variablen für Ringpuffer: Position des Zeigers, Anzahl Bytes im Puffer
 const uint8_t ring_cap = 10;        // Kapazität des Puffers
 uint8_t ring[ring_cap];             // Ring-Puffer für Datenübertragung über serielle Schnittstelle
 
+unsigned long lastDHTInnenSampleTime=0; // letzte Innentemperaturmessung
+unsigned long DHTSampleTime=600000;     // Intervall zwischen zwei Messungen (10 Minuten)
 
 
 void setup() {
@@ -26,19 +30,25 @@ void setup() {
   pinMode(Koff,INPUT_PULLUP);
   pinMode(Tman,INPUT_PULLUP);
   pinMode(LDRpin,INPUT);
+  pinMode(DHTpinInnen,INPUT);
+  pinMode(VentPin,OUTPUT);
+
+
+  dhtinnen.setup(DHTpinInnen);
 
   //*** Kommunikation mit seriellem Monitor
   Serial.begin(115200);
   Serial.println("OK, ICH BIN BEREIT!");
 
   //*** Start-Annahmen
-  Tag=Kzu;                          // Wenn Klappe geschlossen, nehme ich an, es sei Tag, sonst Nacht
+  Tag=digitalRead(Kzu);                          // Wenn Klappe geschlossen, nehme ich an, es sei Tag, sonst Nacht
   
 }
 
 
 
 void loop() {
+
   //*** Sensoren auslesen
   Tman_Pressed=TasterMan.raisingedge();             // Taster manuell ist Schließer
   if(Mode==Mode_AutoLDR)
@@ -47,6 +57,19 @@ void loop() {
       LDR_Changed_to_Day=ldr_Aussen._raisingEdge;
       LDR_Changed_to_Night=ldr_Aussen._fallingEdge;
   }
+  if(Mode_InnenTemp)
+  {
+    if(millis()-lastDHTInnenSampleTime>DHTSampleTime)
+    {
+      if(dhtinnen.getTemperature()>InnenTempMax)
+        InnenVentilator=true;
+      else
+        InnenVentilator=false;      
+    }
+  }
+
+
+
   //*** Serielle Schnittstelle auslesen und in RingPuffer speichern
   if(Serial.available())
   {
@@ -88,10 +111,20 @@ void loop() {
               Mode=Mode_AutoLDR;
               Serial.println("MODE AUTO_LDR");
             }
-            else
+            else if(ring[ring_pos]==Par_TempiOn)
+              {
+                Mode_InnenTemp=true;
+                Serial.println("Innentemperatur-Kontrolle ON");
+              }
+              else if(ring[ring_pos]==Par_TempiOff)
                 {
-                  Serial.println("Fehler beim Protokoll MODE");
+                  Mode_InnenTemp=false;
+                  Serial.println("Innentemperatur-Kontrolle OFF");
                 }
+                else
+                    {
+                      Serial.println("Fehler beim Protokoll MODE");
+                    }
       ring_num-=2;        
     }
   }
@@ -118,6 +151,8 @@ void loop() {
       digitalWrite(Mh,LOW);
       break;
   }
+  digitalWrite(VentPin,InnenVentilator);          // Ventilator einschalten, wenn nötig...
+
   Serial.print(Zustand);
   if(digitalRead(Koff)==LOW)
     Serial.println("Klappe OFFEN");
