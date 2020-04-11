@@ -7,14 +7,14 @@
         {
             _pin=pin;
             _lastMillis=millis();
-            LDRstate=_lastState=(analogRead(_pin)<_hellGrenze);  // Wenn heller als hellGrenze, dann HIGH
+            LDRstate=_lastState=(analogRead(_pin)>_hellGrenze);  // Wenn heller als hellGrenze, dann HIGH
         }
 
 //*** Method for detecting LDR-state
 //*** returns State of LDR (hell=HIGH=heller als hellGrenze)       
         int LDR::readState()
         {
-            int aktState=(analogRead(_pin)<_hellGrenze);
+            int aktState=(analogRead(_pin)>_hellGrenze);
             _fallingEdge=_raisingEdge=false;
             if(aktState!=_lastState)
             {

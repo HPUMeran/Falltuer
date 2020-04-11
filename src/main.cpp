@@ -117,7 +117,11 @@ void loop() {
       digitalWrite(Mh,LOW);
       break;
   }
-  //Serial.print(Zustand);
-  Serial.println(digitalRead(Tman));
+  Serial.print(Zustand);
+  if(digitalRead(Koff)==LOW)
+    Serial.println("Klappe OFFEN");
+  if(digitalRead(Kzu)==LOW)
+    Serial.println("Klappe ZU");
+   
   delay(500);
 }

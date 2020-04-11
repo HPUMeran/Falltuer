@@ -26,7 +26,7 @@ class LDR
     private:
         int _pin;
         unsigned long _lastMillis=0;
-        unsigned long _hellIntervall=600000;    // Min. Zeit, die es hell/dunkel sein muss, um einen Tag/Nacht-Zustand zu erkennen
+        unsigned long _hellIntervall=2000;    // 600000= 10 Min. Zeit, die es hell/dunkel sein muss, um einen Tag/Nacht-Zustand zu erkennen
         int _lastState;
         bool _raisingEdge, _fallingEdge;
         int _hellGrenze=512;                // Schwellwert für Helligkeit (ADC)
