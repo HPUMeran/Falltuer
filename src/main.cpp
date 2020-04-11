@@ -47,16 +47,19 @@ void loop() {
     delay(5);
     while (Serial.available())
     {
-      ring[ring_pos]=Serial.read();
+      ring[(ring_pos+ring_num)%ring_cap]=Serial.read();
       ring_num++;
     }
   }
   if(ring_num>1)
   {
     //*** Daten vorhanden
+    Serial.print("Datenvorhanden: ");
+    Serial.print(ring[ring_pos],HEX);
     if(ring[ring_pos]==Do_Mode)
     {
       ring_pos=(ring_pos+1) % ring_cap;
+      Serial.println("2. Byte");
       if(ring[ring_pos]== Par_Auf)
       {
         Mode=Mode_Auf;
@@ -76,7 +79,7 @@ void loop() {
               {
                 Serial.println("Fehler beim Protokoll MODE");
               }
-              
+      ring_num-=2;        
     }
   }
 
