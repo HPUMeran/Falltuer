@@ -48,15 +48,45 @@ void loop() {
     while (Serial.available())
     {
       ring[ring_pos]=Serial.read();
-      ring_pos=(ring_pos+1) % ring_cap;
-      ring_num=(ring_num+1) % ring_num;
-      
+      ring_num++;
     }
-    
   }
+  if(ring_num>1)
+  {
+    //*** Daten vorhanden
+    if(ring[ring_pos]==Do_Mode)
+    {
+      ring_pos=(ring_pos+1) % ring_cap;
+      if(ring[ring_pos]== Par_Auf)
+      {
+        Mode=Mode_Auf;
+        Serial.println("MODE AUF");
+      }
+      else if(ring[ring_pos]==Par_Auto)
+        {
+          Mode=Mode_Auto;
+          Serial.println("MODE Auto");
+        }
+        else if(ring[ring_pos]==Par_Zu)
+          {
+            Mode=Mode_Zu;
+            Serial.println("MODE ZU");
+          }
+          else
+              {
+                Serial.println("Fehler beim Protokoll MODE");
+              }
+              
+    }
+  }
+
+  if(Mode==Mode_Auf)
+    Zustand=ST_Oeffnen;
+  if(Mode==Mode_Zu)
+    Zustand=ST_Schliessen;
   //*** Übergänge kontrollieren, um aktuellen Zustand herauszufinden
   transitions();
-
+    
   //*** Aktionen ausführen, die zum Zustand gehören
   switch(Zustand)
   {
