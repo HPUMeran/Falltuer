@@ -40,11 +40,12 @@ void setup() {
 
 void loop() {
   //*** Sensoren auslesen
-  Tman_Pressed=TasterMan.fallingedge();             // Taster manuell ist Öffner
+  Tman_Pressed=TasterMan.raisingedge();             // Taster manuell ist Schließer
   if(Mode==Mode_AutoLDR)
   {
-      LDR_Changed_to_Day=ldr_Aussen.raisingLDR();
-      LDR_Changed_to_Night=ldr_Aussen.fallingLDR();
+      ldr_Aussen.readState();
+      LDR_Changed_to_Day=ldr_Aussen._raisingEdge;
+      LDR_Changed_to_Night=ldr_Aussen._fallingEdge;
   }
   //*** Serielle Schnittstelle auslesen und in RingPuffer speichern
   if(Serial.available())

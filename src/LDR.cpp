@@ -25,7 +25,7 @@
                 if(aktState!=LDRstate)
                 {
                     LDRstate=aktState;
-                    if(LDRstate==LOW)
+                    if(LDRstate==0)
                         _fallingEdge=true;
                     else
                         _raisingEdge=true;             
@@ -35,20 +35,5 @@
             return LDRstate;
         }
 
-        //*** Method for detecting raising Edges
-        //*** returns true if detected
-        bool LDR::raisingLDR()
-        {
-            readState();
-            return _raisingEdge;
-        }
-        
-        //*** Method for detecting falling Edges
-        //*** returns true if detected
-        bool LDR::fallingLDR()
-        {
-            readState();
-            return _fallingEdge;
-        }
 
     
