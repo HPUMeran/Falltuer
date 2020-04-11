@@ -22,15 +22,15 @@ void setup() {
   pinMode(Kzu,INPUT_PULLUP);
   pinMode(Koff,INPUT_PULLUP);
   pinMode(Tman,INPUT_PULLUP);
-
+  pinMode(LDRpin,INPUT);
 
   //*** Kommunikation mit seriellem Monitor
   Serial.begin(115200);
   Serial.println("OK, ICH BIN BEREIT!");
 
-  //*** Startzustand setzen
-  Zustand=ST_Bereit;
-
+  //*** Start-Annahmen
+  Tag=Kzu;                          // Wenn Klappe geschlossen, nehme ich an, es sei Tag, sonst Nacht
+  
 }
 
 
