@@ -16,7 +16,7 @@ uint8_t Par_AutoLDR = 0x33;                 // 3
 int Mode=Mode_Auto;                         
 int Zustand=ST_Bereit;
 bool Tman_Pressed=false;
-bool bHell=false;                           // Helligkeit an LDR > hellGrenze?
-int hellGrenze=512;                         // Schwellwert für Helligkeit (ADC-Wert)
-unsigned long hellIntervall=600000;         // Min. Zeit, die es bHell sein muss, um Tag zu erkennen (10min)
+
 bool Tag;                                   // Tag oder Nacht?
+bool LDR_Changed_to_Day=false;              // Hat der LDR-Zustand gerade zu Tag gewechselt?
+bool LDR_Changed_to_Night= false;           // Hat der LDR-Zustand gerade zu Nacht gewechselt?

@@ -10,6 +10,8 @@
 
 //*** Globale Variablen
 Entprellung TasterMan(Tman);
+LDR ldr_Aussen(LDRpin);
+
 uint8_t ring_pos=0, ring_num=0;     // Variablen für Ringpuffer: Position des Zeigers, Anzahl Bytes im Puffer
 const uint8_t ring_cap = 10;        // Kapazität des Puffers
 uint8_t ring[ring_cap];             // Ring-Puffer für Datenübertragung über serielle Schnittstelle
@@ -39,7 +41,11 @@ void setup() {
 void loop() {
   //*** Sensoren auslesen
   Tman_Pressed=TasterMan.fallingedge();             // Taster manuell ist Öffner
-
+  if(Mode==Mode_AutoLDR)
+  {
+      LDR_Changed_to_Day=ldr_Aussen.raisingLDR();
+      LDR_Changed_to_Night=ldr_Aussen.fallingLDR();
+  }
   //*** Serielle Schnittstelle auslesen und in RingPuffer speichern
   if(Serial.available())
   {
@@ -96,7 +102,7 @@ void loop() {
   switch(Zustand)
   {
     case ST_Bereit:
-      Serial.println("BEREIT!");
+      //Serial.println("BEREIT!");
       digitalWrite(Mh,LOW);
       digitalWrite(Mr,LOW);
       break;    
@@ -111,6 +117,7 @@ void loop() {
       digitalWrite(Mh,LOW);
       break;
   }
-  Serial.println(Zustand);
+  //Serial.print(Zustand);
+  Serial.println(digitalRead(Tman));
   delay(500);
 }

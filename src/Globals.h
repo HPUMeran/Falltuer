@@ -38,9 +38,8 @@ extern int Mode;                            // Konfigurations-Modus: Offen-ZU-Au
 extern int Zustand;                         // Zustand im Zustandsdiagramm
 extern bool Tman_Pressed;                   // Taster Manuell gedrückt?
 
-extern bool bHell;                          // Helligkeit an LDR > hellGrenze?
-extern int hellGrenze;                      // Schwellwert für Helligkeit (ADC-Wert)
-extern unsigned long hellIntervall;         // Min. Zeit, die es bHell sein muss, um Tag zu erkennen
 extern bool Tag;                            // Tag oder Nacht?
+extern bool LDR_Changed_to_Day;             // Hat der LDR-Zustand gerade zu Tag gewechselt?
+extern bool LDR_Changed_to_Night;           // Hat der LDR-Zustand gerade zu Nacht gewechselt?
 
 #endif
