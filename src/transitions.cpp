@@ -39,7 +39,7 @@ void transitions()
             Zustand=ST_Bereit;
 
         // --- von Bereit auf öffnen
-        if(Zustand==ST_Bereit && Tman_Pressed && TorNichtOffen==HIGH)
+        if(Zustand==ST_Bereit && Tman_Pressed && TorNichtOffen==HIGH && AussenKalt==false)
             Zustand=ST_Oeffnen;
 
         // --- von Bereit auf Schließen
@@ -71,7 +71,7 @@ void transitions()
         }
 
         // --- Bereit auf Öffnen wegen LDR
-        if(Zustand==ST_Bereit && LDR_Changed_to_Day && TorNichtOffen==HIGH)
+        if(Zustand==ST_Bereit && LDR_Changed_to_Day && TorNichtOffen==HIGH && AussenKalt==false)
             Zustand=ST_Oeffnen;
 
         // --- Bereit auf Schließen wegen LDR

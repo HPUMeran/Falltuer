@@ -13,6 +13,7 @@
 #define LDRpin          A6                          // LDR : je höher der Wert, desto dunkler ist es.
 #define DHTpinInnen     6                           // Pin für Innentemperatur
 #define VentPin         A1                          // Pin für Ventilator innen
+#define DHTpinAussen    9                           // Pin für Aussentemperatur
 
 //***   ZUSTÄNDE
 #define ST_Bereit       1
@@ -37,6 +38,8 @@ extern uint8_t Par_Auto;
 extern uint8_t Par_AutoLDR;
 extern uint8_t Par_TempiOn;
 extern uint8_t Par_TempiOff;
+extern uint8_t Par_TempAOn;
+extern uint8_t Par_TempAOff;
 
 //*** Globale Variablen
 extern int Mode;                            // Konfigurations-Modus: Offen-ZU-Automatik
@@ -50,5 +53,10 @@ extern bool LDR_Changed_to_Night;           // Hat der LDR-Zustand gerade zu Nac
 extern bool Mode_InnenTemp;                 // Soll Innentemperatur kontrolliert werden?
 extern bool InnenVentilator;                // Innenventilator eongeschaltet?
 extern int InnenTempMax;                    // Maximale Innentemperatur, ab der Ventilator eingeschalten wird
+
+extern bool Mode_AussenTemp;                // Soll Aussentemperatur kontrolliert werden?
+extern bool AussenKalt;                     // Ist es außen zu kalt -> zeitverzögert starten
+extern int AussenTempGrenze;                // Mindest-Außentemperatur, ab der normal geöffnet wird
+extern unsigned long Verzoegerung;          // Verzögerungszeit zum Öffnen, wennes draussen zu kalt ist.
 
 #endif

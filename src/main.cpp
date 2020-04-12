@@ -13,12 +13,14 @@
 Entprellung TasterMan(Tman);        // Entprellung des manuellen Tasters
 LDR ldr_Aussen(LDRpin);             // LDR für Dämmerungsschaltung
 DHT dhtinnen;                       // InnenTemperaturSensor
+DHT dhtaussen;                      // Aussentemperatursensor
 
 uint8_t ring_pos=0, ring_num=0;     // Variablen für Ringpuffer: Position des Zeigers, Anzahl Bytes im Puffer
 const uint8_t ring_cap = 10;        // Kapazität des Puffers
 uint8_t ring[ring_cap];             // Ring-Puffer für Datenübertragung über serielle Schnittstelle
 
 unsigned long lastDHTInnenSampleTime=0; // letzte Innentemperaturmessung
+unsigned long lastDHTAussenSampleTime=0; // letzte Außentemperaturmessung
 unsigned long DHTSampleTime=600000;     // Intervall zwischen zwei Messungen (10 Minuten)
 
 
@@ -32,9 +34,10 @@ void setup() {
   pinMode(LDRpin,INPUT);
   pinMode(DHTpinInnen,INPUT);
   pinMode(VentPin,OUTPUT);
-
+  pinMode(DHTpinAussen,INPUT);
 
   dhtinnen.setup(DHTpinInnen);
+  dhtaussen.setup(DHTpinAussen);
 
   //*** Kommunikation mit seriellem Monitor
   Serial.begin(115200);
@@ -57,7 +60,7 @@ void loop() {
       LDR_Changed_to_Day=ldr_Aussen._raisingEdge;
       LDR_Changed_to_Night=ldr_Aussen._fallingEdge;
   }
-  if(Mode_InnenTemp)
+  if(Mode_InnenTemp)                                // Innentemperatur
   {
     if(millis()-lastDHTInnenSampleTime>DHTSampleTime)
     {
@@ -67,7 +70,16 @@ void loop() {
         InnenVentilator=false;      
     }
   }
-
+  if(Mode_AussenTemp)                               // Aussentemperatur
+  {
+    if(millis()-lastDHTAussenSampleTime>DHTSampleTime)
+    {
+      if(dhtaussen.getTemperature()<AussenTempGrenze)
+        AussenKalt=true;
+      else
+        AussenKalt=false;      
+    }
+  }
 
 
   //*** Serielle Schnittstelle auslesen und in RingPuffer speichern
@@ -121,10 +133,20 @@ void loop() {
                   Mode_InnenTemp=false;
                   Serial.println("Innentemperatur-Kontrolle OFF");
                 }
-                else
+                else if(ring[ring_pos]==Par_TempAOn)
+                  {
+                    Mode_AussenTemp=true;
+                    Serial.println("Aussentemperatur-Kontrolle ON");
+                  }
+                  else if(ring[ring_pos]==Par_TempAOff)
                     {
-                      Serial.println("Fehler beim Protokoll MODE");
+                      Mode_AussenTemp=false;
+                      Serial.println("Aussentemperatur-Kontrolle OFF");
                     }
+                    else
+                        {
+                          Serial.println("Fehler beim Protokoll MODE");
+                        }
       ring_num-=2;        
     }
   }
